@@ -11,6 +11,7 @@ app.get('/',function(req,res) {
 var usernames = {};
 
 io.sockets.on('connection', function(socket) {
+	socket.set('transports', ['xhr-polling']);
 
 	socket.on('sendchat',function(data){
 		io.sockets.emit('updatechat', socket.username, data);
@@ -29,5 +30,4 @@ io.sockets.on('connection', function(socket) {
 		io.sockets.emit('updateusers', usernames);
 		socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
 	});
-});
-	
+});	
