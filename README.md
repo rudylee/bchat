@@ -1,7 +1,7 @@
 # Bchat #
 
-Bchat, web chat apps based on node.js. Developed this to help in my journey to master node.js.
+Web chat apps that using node.js as the core technology. Developed this to help me to understand node.js.
 
 # Stacks #
-Socket.io 0.8.7
-Express 2.5.0
+* Socket.io v0.8.7
+* Express v2.5.0

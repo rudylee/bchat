@@ -3,7 +3,7 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 <script>
-	var socket = io.connect('http://192.168.2.124:8080');
+	var socket = io.connect('http://localhost:8080');
 
 	// on connection to server, ask for user's name with an anonymous callback
 	socket.on('connect', function(){
@@ -55,13 +55,19 @@
 
 </script>
 <style>
+#wrapper {
+	width:600px;
+	height:300px;
+}
 #nickprompt {
 	margin:auto;
 }
 </style>
 </head>
 <body>
+<div id="wrapper">
 <div id="nickprompt" style="display:block">
+	<p>Please enter your nickname:</p>
 	<input type="text" name="nick" id="nickInput" />
 	<input type="button" id="connect" value="Connect"/>
 </div>
@@ -76,6 +82,7 @@
 		<input id="data" style="width:200px;" />
 		<input type="button" id="datasend" value="send" />
 	</div>
+</div>
 </div>
 </body>
 </html>
