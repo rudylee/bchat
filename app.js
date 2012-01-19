@@ -1,6 +1,6 @@
 var app = require('express').createServer();
 var io = require('socket.io').listen(app);
-//var filter = require('filter.js');
+var filter = require('filter');
 
 app.listen(8080);
 
@@ -18,11 +18,15 @@ io.sockets.on('connection', function(socket) {
 	});
 
 	socket.on('adduser', function(username) {
-		socket.username = username;
-		usernames[username] = username;
-		socket.emit('updatechat', 'SERVER', 'you have connected');
-		socket.broadcast.emit('updatechat', 'SERVER', username + ' has connect');
-		io.sockets.emit('updateusers', usernames);
+		if(filter.validUsername(username)) {
+			socket.username = username;
+			usernames[username] = username;
+			socket.emit('updatechat', 'SERVER', 'you have connected');
+			socket.broadcast.emit('updatechat', 'SERVER', username + ' has connect');
+			io.sockets.emit('updateusers', usernames);
+		} else {
+			socket.emit('warning', 'SERVER', 'Please enter another nickname');
+		}
 	});
 
 	socket.on('disconnect', function() {
