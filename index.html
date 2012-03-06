@@ -1,5 +1,7 @@
+<!DOCTYPE html>
 <html>
 <head>
+<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script>
@@ -8,7 +10,7 @@
 	// on connection to server, ask for user's name with an anonymous callback
 	socket.on('connect', function(){
 		// call the server-side function 'adduser' and send one parameter (value of prompt)
-		// socket.emit('adduser', 'guest'+Math.random());
+		socket.emit('adduser', 'guest'+Math.floor(Math.random()*11));
 	});
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body
@@ -41,15 +43,8 @@
 			if(e.which == 13) {
 				$(this).blur();
 				$('#datasend').focus().click();
+				$('#data').focus();
 			}
-		});
-
-		// when the client try to click connect
-		$('#connect').click( function() {
-			var nick = $("#nickInput").attr("value");
-			socket.emit('adduser',nick);
-			$('#nickprompt').attr('style','display:none');
-			$('#chat').attr('style','display:block');	
 		});
 	});
 
@@ -59,30 +54,23 @@
 	width:600px;
 	height:300px;
 }
-#nickprompt {
-	margin:auto;
-}
 </style>
 </head>
 <body>
 <div id="wrapper">
-<div id="nickprompt" style="display:block">
-	<p>Please enter your nickname:</p>
-	<input type="text" name="nick" id="nickInput" />
-	<input type="button" id="connect" value="Connect"/>
-</div>
 
-<div id="chat" style="display:none">
+<div id="chat">
 	<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
 		<b>USERS</b>
 		<div id="users"></div>
 	</div>
-	<div style="float:left;width:300px;height:250px;overflow:scroll-y;padding:10px;">
-		<div id="conversation"></div>
-		<input id="data" style="width:200px;" />
-		<input type="button" id="datasend" value="send" />
+	<div style="float:left;width:300px;">
+		<div id="conversation" style="height:250px;overflow:scroll"></div>
+		<input id="data" type="text" class="input-xlarge" />
+		<input type="button" id="datasend" value="Send" class="btn-primary"/>
 	</div>
 </div>
 </div>
+
 </body>
 </html>

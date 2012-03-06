@@ -7,6 +7,9 @@ app.listen(8080);
 app.get('/',function(req,res) {
 	res.sendfile(__dirname + '/index.html');
 });
+app.get('/*.(js|css)', function(req, res){
+  res.sendfile(__dirname + req.url);
+});
 
 var usernames = {};
 
