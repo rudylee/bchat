@@ -15,7 +15,7 @@
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body
 	socket.on('updatechat', function (username, data) {
-		$('#conversation').append('<b>'+username + ':</b> ' + data + '<br>');
+		$('#conversation').prepend('<b>'+username + ':</b> ' + data + '<br>');
 	});
 
 	// listener, whenever the server emits 'updateusers', this updates the username list
@@ -58,16 +58,15 @@
 </head>
 <body>
 <div id="wrapper">
-
 <div id="chat">
-	<div style="float:left;width:100px;border-right:1px solid black;height:300px;padding:10px;overflow:scroll-y;">
-		<b>USERS</b>
-		<div id="users"></div>
-	</div>
-	<div style="float:left;width:300px;">
-		<div id="conversation" style="height:250px;overflow:scroll"></div>
+	<div style="float:left;width:450px;">
+		<div id="conversation" style="width:450px;height:250px;overflow-y:scroll;overflow-x:hidden"></div>
 		<input id="data" type="text" class="input-xlarge" />
 		<input type="button" id="datasend" value="Send" class="btn-primary"/>
+	</div>
+	<div style="float:left;width:100px;height:300px;padding:10px;overflow:scroll-y;">
+		<b>USERS</b>
+		<div id="users"></div>
 	</div>
 </div>
 </div>
