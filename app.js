@@ -1,5 +1,6 @@
 var app = require('express').createServer();
 var io = require('socket.io').listen(app);
+var lazy = require('lazy');
 var filter = require('filter');
 
 app.listen(9000);
@@ -32,12 +33,16 @@ io.sockets.on('connection', function(socket) {
 		}
 	});
 	
+	//-- Change Username --//
 	socket.on('change_username', function(new_username) {
-		old_username = socket.username;
-		socket.username = new_username;
-		delete usernames[old_username];
-		usernames[new_username] = new_username;
-		io.sockets.emit('updateusers', usernames);
+		console.log(usernames[new_username]);
+		if(usernames[new_username] == undefined) {
+			old_username = socket.username;
+			socket.username = new_username;
+			delete usernames[old_username];
+			usernames[new_username] = new_username;
+			io.sockets.emit('updateusers', usernames);
+		}
 	});
 
 	socket.on('disconnect', function() {
