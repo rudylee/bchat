@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="/bootstrap/js/bootstrap.min.js"></script>
 <script>
-	var socket = io.connect('http://localhost:8080');
+	var socket = io.connect('http://localhost:9000');
 
 	// on connection to server, ask for user's name with an anonymous callback
 	socket.on('connect', function(){
 		// call the server-side function 'adduser' and send one parameter (value of prompt)
-		socket.emit('adduser', 'guest'+Math.floor(Math.random()*11));
+		socket.emit('adduser', 'guest'+Math.floor(Math.random()*100000));
 	});
 
 	// listener, whenever the server emits 'updatechat', this updates the chat body
@@ -37,6 +38,13 @@
 				socket.emit('sendchat', message);
 			}
 		});
+		
+		//when the client change username
+		$('#change').click(function() {
+			$('#change-username').modal('hide');
+			var new_username = $('#new_username').val();
+			socket.emit('change_username',new_username);
+		});
 
 		// when the client hits ENTER on their keyboard
 		$('#data').keypress(function(e) {
@@ -47,28 +55,52 @@
 			}
 		});
 	});
-
+	
+	$('#change-username').modal({
+		keyboard: true
+	})
 </script>
-<style>
-#wrapper {
-	width:600px;
-	height:300px;
-}
-</style>
 </head>
 <body>
-<div id="wrapper">
-<div id="chat">
-	<div style="float:left;width:450px;">
-		<div id="conversation" style="width:450px;height:250px;overflow-y:scroll;overflow-x:hidden"></div>
-		<input id="data" type="text" class="input-xlarge" />
-		<input type="button" id="datasend" value="Send" class="btn-primary"/>
+<div class="row">
+	<div class="span7">
+		<div class="row">
+			<div class="span4 well">
+				<div id="conversation" style="height:200px;overflow-y:scroll;overflow-x:hidden"></div>
+			</div>
+			<div class="span2" style="overflow:scroll-y;">
+				<b>USERS</b>
+				<div id="users" style="height:200px;overflow-y:scroll;overflow-x:hidden"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="span5">
+				<input id="data" type="text" class="input-xlarge" />
+				<input type="button" id="datasend" value="Send" class="btn-primary"/>
+			</div>
+			<div class="span2">
+				<div class="btn-group">
+					<a class="btn btn-primary" href="#">Settings</a>
+					<a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+					<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a data-toggle="modal" href="#change-username">Change username</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div style="float:left;width:100px;height:300px;padding:10px;overflow:scroll-y;">
-		<b>USERS</b>
-		<div id="users"></div>
+	<div class="modal hide fade" id="change-username">
+		<div class="modal-header">
+			<a class="close" data-dismiss="modal">×</a>
+			<h3>Please input new username</h3>
+		</div>
+		<div class="modal-body">
+			<input id="new_username" type="text" class="input-xlarge" />
+			<input type="button" id="change" value="Change Username" class="btn-primary"/>
+		</div>
 	</div>
-</div>
 </div>
 
 </body>

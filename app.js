@@ -2,7 +2,7 @@ var app = require('express').createServer();
 var io = require('socket.io').listen(app);
 var filter = require('filter');
 
-app.listen(8080);
+app.listen(9000);
 
 app.get('/',function(req,res) {
 	res.sendfile(__dirname + '/index.html');
@@ -31,10 +31,18 @@ io.sockets.on('connection', function(socket) {
 			socket.emit('warning', 'SERVER', 'Please enter another nickname');
 		}
 	});
+	
+	socket.on('change_username', function(new_username) {
+		old_username = socket.username;
+		socket.username = new_username;
+		delete usernames[old_username];
+		usernames[new_username] = new_username;
+		io.sockets.emit('updateusers', usernames);
+	});
 
 	socket.on('disconnect', function() {
 		delete usernames[socket.username];
 		io.sockets.emit('updateusers', usernames);
 		socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
 	});
-});	
+});
