@@ -3,7 +3,7 @@ var io = require('socket.io').listen(app);
 var lazy = require('lazy');
 var filter = require('filter');
 
-app.listen(9000);
+app.listen(10000);
 
 app.get('/',function(req,res) {
 	res.sendfile(__dirname + '/index.html');
